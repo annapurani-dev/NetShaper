@@ -1,0 +1,47 @@
+{
+  "hotspotPrefix": "192.168.137",
+  "queueMs": 400,
+  "baseline": { "upKbps": 5000, "downKbps": 5000, "latencyMs": 20, "jitterMs": 5, "lossPct": 0 },
+  "fluctuation": {
+    "default": "medium",
+    "profiles": {
+      "mild":       { "minKbps": 2500, "maxKbps": 5000, "intervalSec": 3, "latencyMin": 20, "latencyMax": 60,  "jitterMin": 5,  "jitterMax": 20,  "lossMin": 0, "lossMax": 0.5, "smooth": true },
+      "medium":     { "minKbps": 500,  "maxKbps": 4000, "intervalSec": 2, "latencyMin": 40, "latencyMax": 200, "jitterMin": 10, "jitterMax": 60,  "lossMin": 0, "lossMax": 2,   "smooth": true },
+      "aggressive": { "minKbps": 64,   "maxKbps": 3000, "intervalSec": 1, "latencyMin": 50, "latencyMax": 500, "jitterMin": 20, "jitterMax": 150, "lossMin": 0, "lossMax": 8,   "smooth": false }
+    }
+  },
+  "spike": {
+    "defaultDurationSec": 5,
+    "durationsSec": [3, 5, 10, 30],
+    "down": {
+      "mild":     { "upKbps": 300, "downKbps": 300, "latencyMs": 100, "jitterMs": 20,  "lossPct": 2 },
+      "hard":     { "upKbps": 64,  "downKbps": 64,  "latencyMs": 300, "jitterMs": 50,  "lossPct": 10 },
+      "blackout": { "upKbps": 8,   "downKbps": 8,   "latencyMs": 800, "jitterMs": 100, "lossPct": 50 }
+    },
+    "up": {
+      "mild": { "upKbps": 8000, "downKbps": 8000, "latencyMs": 10, "jitterMs": 2, "lossPct": 0 },
+      "full": { "upKbps": 0,    "downKbps": 0,    "latencyMs": 0,  "jitterMs": 0, "lossPct": 0 }
+    }
+  },
+  "sequences": {
+    "demo": {
+      "loop": false,
+      "steps": [
+        { "mode": "GOOD",       "seconds": 20 },
+        { "mode": "FLUCTUATE",  "seconds": 30, "profile": "medium" },
+        { "mode": "SPIKE_DOWN", "seconds": 10, "strength": "hard" },
+        { "mode": "SPIKE_UP",   "seconds": 5,  "strength": "full" },
+        { "mode": "FLUCTUATE",  "seconds": 0,  "profile": "mild" }
+      ]
+    },
+    "flaky-loop": {
+      "loop": true,
+      "steps": [
+        { "mode": "GOOD",       "seconds": 10 },
+        { "mode": "SPIKE_DOWN", "seconds": 5, "strength": "blackout" },
+        { "mode": "SPIKE_UP",   "seconds": 3, "strength": "full" },
+        { "mode": "FLUCTUATE",  "seconds": 20, "profile": "aggressive" }
+      ]
+    }
+  }
+}

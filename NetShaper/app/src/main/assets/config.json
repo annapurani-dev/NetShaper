@@ -1,0 +1,63 @@
+{
+  "_help": "Edit this file on the phone (Android/data/com.netshaper/files/config.json) or via adb push, then tap 'Reload config' in the app. kbps value 0 = unlimited. Keys starting with _ are ignored.",
+
+  "baseline": { "upKbps": 10000, "downKbps": 10000, "latencyMs": 0, "jitterMs": 0, "lossPct": 0 },
+
+  "fluctuate": {
+    "defaultProfile": "medium",
+    "profiles": {
+      "mild": {
+        "kbps": [3000, 10000], "latencyMs": [20, 80], "jitterMs": [0, 20], "lossPct": [0, 1],
+        "intervalMs": 3000, "smooth": true
+      },
+      "medium": {
+        "kbps": [500, 6000], "latencyMs": [40, 250], "jitterMs": [10, 80], "lossPct": [0, 5],
+        "intervalMs": 2000, "smooth": true
+      },
+      "aggressive": {
+        "kbps": [50, 4000], "latencyMs": [100, 800], "jitterMs": [50, 300], "lossPct": [0, 15],
+        "intervalMs": 1000, "smooth": false
+      }
+    }
+  },
+
+  "spike": {
+    "durationSec": 10,
+    "defaultDownStrength": "hard",
+    "defaultUpStrength": "full",
+    "down": {
+      "mild":     { "upKbps": 500, "downKbps": 500, "latencyMs": 150, "jitterMs": 30,  "lossPct": 2 },
+      "hard":     { "upKbps": 100, "downKbps": 100, "latencyMs": 400, "jitterMs": 100, "lossPct": 10 },
+      "blackout": { "upKbps": 8,   "downKbps": 8,   "latencyMs": 1500, "jitterMs": 0,  "lossPct": 90 }
+    },
+    "up": {
+      "mild": { "upKbps": 5000,  "downKbps": 5000,  "latencyMs": 20, "jitterMs": 0, "lossPct": 0 },
+      "full": { "upKbps": 50000, "downKbps": 50000, "latencyMs": 0,  "jitterMs": 0, "lossPct": 0 }
+    }
+  },
+
+  "sequences": {
+    "demo": [
+      { "mode": "GOOD", "sec": 20 },
+      { "mode": "FLUCTUATE", "sec": 30 },
+      { "mode": "SPIKE_DOWN", "sec": 10 },
+      { "mode": "SPIKE_UP", "sec": 5 },
+      { "mode": "FLUCTUATE", "sec": 0 }
+    ],
+    "quick-drop": [
+      { "mode": "GOOD", "sec": 10 },
+      { "mode": "SPIKE_DOWN", "sec": 5 },
+      { "mode": "SPIKE_UP", "sec": 5 },
+      { "mode": "GOOD", "sec": 0 }
+    ]
+  },
+
+  "general": {
+    "_blockIpv6": "true = IPv6 traffic is refused so apps fall back to (shaped) IPv4. false = IPv6 leaks around the shaper.",
+    "blockIpv6": true,
+    "_maxQueueMs": "Queue depth per direction (ms of data at the current rate) before UDP packets are tail-dropped.",
+    "maxQueueMs": 1500,
+    "_dnsServers": "Optional. Leave empty to keep the phone's own DNS (DNS is still shaped).",
+    "dnsServers": []
+  }
+}
